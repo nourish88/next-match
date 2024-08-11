@@ -1,5 +1,6 @@
-import { Button, Link } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import Image from "next/image";
+import Link from "next/link";
 import { FaRegSmile } from "react-icons/fa";
 
 export default function Home() {

@@ -15,6 +15,7 @@ export default function NavLink({ href, label }: Props) {
   return (
     <NavbarItem isActive={pathname === href} as={Link} href={href}>
       {label}
+     
     </NavbarItem>
   );
 }

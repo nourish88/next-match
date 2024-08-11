@@ -6,6 +6,7 @@ import { GiPadlock } from "react-icons/gi";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchema } from "@/lib/schemas/loginSchema";
+import { signInUser } from "@/app/actions/authActions";
 
 // import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
 // import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,7 +47,7 @@ export default function LoginForm() {
         </div>
       </CardHeader>
       <CardBody>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form  onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <Input
               defaultValue=""
