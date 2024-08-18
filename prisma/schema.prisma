@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url     = "postgresql://pharmacy_owner:vXZc8w4xVaQm@ep-steep-cake-a2tmph6l.eu-central-1.aws.neon.tech/pharmacy?sslmode=require"
+  url     = "*********"
 }
 
 model Account {

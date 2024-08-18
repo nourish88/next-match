@@ -7,15 +7,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchema } from "@/lib/schemas/loginSchema";
 import { signInUser } from "@/app/actions/authActions";
-
-// import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { signInUser } from "@/app/actions/authActions";
-// import { useRouter } from "next/navigation";
-// import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function LoginForm() {
-  //   const router = useRouter();
+    const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -26,13 +22,14 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    // const result = await signInUser(data);
-    // if (result.status === "success") {
-    //   router.push("/members");
-    //   router.refresh();
-    // } else {
-    //   toast.error(result.error as string);
-    // }
+    const result = await signInUser(data);
+    console.log(result)
+    if (result.status === "success") {
+      router.push("/members");
+      router.refresh();
+    } else {
+      toast.error(result.error as string);
+    }
   };
 
   return (

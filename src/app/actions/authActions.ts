@@ -20,13 +20,18 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
             redirect: false
         });
         console.log(result);
-
+console.log("12312312")
+console.log({status: 'success', data: 'Logged in'})
         return {status: 'success', data: 'Logged in'}
     } catch (error) {
+        debugger;
         console.log(error);
         if (error instanceof AuthError) {
+            console.log(1)
+            console.log(error.type)
             switch (error.type) {
                 case 'CredentialsSignin':
+                    case "CallbackRouteError":
                     return {status: 'error', error: 'Invalid credentials'}
                 default:
                     return {status: 'error', error: 'Something went wrong'}
