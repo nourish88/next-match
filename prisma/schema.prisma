@@ -4,9 +4,79 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url     = "*********"
+  url     = "postgresql://pharmacy_owner:vXZc8w4xVaQm@ep-steep-cake-a2tmph6l.eu-central-1.aws.neon.tech/pharmacy?sslmode=require"
+}
+model EntityBase {
+  id Int @id @default(autoincrement())
 }
 
+model Customer {
+  id          Int      @id @default(autoincrement())
+  name        String?
+  surName     String?
+  phoneNumber String?
+  email       String?
+  address     String?
+  sales       Sale[]
+  userid      String
+  createdAt   DateTime
+}
+
+model Group {
+  id        Int       @id @default(autoincrement())
+  name      String
+  medicines Medicine[]
+  saleGroups SaleGroup[]
+   userid      String
+  createdAt   DateTime
+}
+
+model Medicine {
+  id      Int     @id @default(autoincrement())
+  name    String?
+  price   Decimal?
+  groupId Int?
+  group   Group?  @relation(fields: [groupId], references: [id],onDelete: Cascade)
+  saleItems SaleItem[]
+    userid      String
+  createdAt   DateTime
+}
+
+model Sale {
+  id           Int          @id @default(autoincrement())
+  customerId   Int
+  customer     Customer     @relation(fields: [customerId], references: [id])
+  time         DateTime
+  year         Int
+  day          Int
+  month        Int 
+  saleGroups   SaleGroup[]
+  saleItems    SaleItem[]
+    userid      String
+  createdAt   DateTime
+}
+
+model SaleGroup {
+  id        Int    @id @default(autoincrement())
+  saleId    Int
+  sale      Sale   @relation(fields: [saleId], references: [id])
+  groupId   Int
+  group     Group  @relation(fields: [groupId], references: [id])
+  amount    Int
+    userid      String
+  createdAt   DateTime
+}
+
+model SaleItem {
+  id          Int      @id @default(autoincrement())
+  saleId      Int
+  sale        Sale     @relation(fields: [saleId], references: [id])
+  medicineId  Int
+  medicine    Medicine @relation(fields: [medicineId], references: [id])
+  amount      Int
+  userid      String
+  createdAt   DateTime
+}
 model Account {
   id                 String  @id @default(cuid())
   userId             String

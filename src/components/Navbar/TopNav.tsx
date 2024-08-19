@@ -5,6 +5,7 @@ import { GiMatchTip } from 'react-icons/gi'
 import NavLink from './NavLink'
 import { auth } from '@/auth'
 import UserMenu from './UserMenu'
+import CustomerMenu from './CustomerMenu'
 
 
 export default async function TopNav() {
@@ -30,9 +31,10 @@ export default async function TopNav() {
                 </div>
             </NavbarBrand>
             <NavbarContent justify='center'>
-                <NavLink href='/members' label='Matches' />
-                <NavLink href='/lists' label='Lists' />
-                <NavLink href='/messages' label='Messages' />
+            <CustomerMenu name="MÜŞTERİ" />
+                <NavLink href='/lists' label='Marka' />
+                <NavLink href='/messages' label='Ürün' />
+                  <NavLink href='/messages' label='Satış' />
             </NavbarContent>
             <NavbarContent justify='end'>
                 {session?.user ? (
