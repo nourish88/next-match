@@ -1,11 +1,13 @@
 import { Button, Navbar, NavbarBrand, NavbarContent } from '@nextui-org/react'
 import Link from 'next/link'
 import React from 'react'
-import { GiMatchTip } from 'react-icons/gi'
-import NavLink from './NavLink'
+import { GiDrippingTube } from 'react-icons/gi'
 import { auth } from '@/auth'
 import UserMenu from './UserMenu'
 import CustomerMenu from './CustomerMenu'
+import BrandMenu from './BrandMenu'
+import ProductMenu from './ProductMenu'
+import SalesMenu from './SalesMenu'
 
 
 export default async function TopNav() {
@@ -24,17 +26,18 @@ export default async function TopNav() {
             }}
         >
             <NavbarBrand as={Link} href='/'>
-                <GiMatchTip size={40} className='text-gray-200' />
+                <GiDrippingTube size={40} className='text-gray-200' />
                 <div className='font-bold text-3xl flex'>
-                    <span className='text-gray-900'>Next</span>
-                    <span className='text-gray-200'>Match</span>
+                    <span className='text-gray-900'>Yazıcı</span>
+                    <span className='text-gray-200'>Eczanesi</span>
                 </div>
             </NavbarBrand>
             <NavbarContent justify='center'>
             <CustomerMenu name="MÜŞTERİ" />
-                <NavLink href='/lists' label='Marka' />
-                <NavLink href='/messages' label='Ürün' />
-                  <NavLink href='/messages' label='Satış' />
+            <BrandMenu name="MARKA" />
+            <ProductMenu name="ÜRÜN" />
+            <SalesMenu name="SATIŞ" />
+           
             </NavbarContent>
             <NavbarContent justify='end'>
                 {session?.user ? (

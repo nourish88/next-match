@@ -43,9 +43,9 @@ export default function RegisterForm() {
         <div className="flex flex-col gap-2 items-center text-secondary">
           <div className="flex flex-row items-center gap-3">
             <GiPadlock size={30} />
-            <h1 className="text-3xl font-semibold">Register</h1>
+            <h1 className="text-3xl font-semibold">Kayıt Formu</h1>
           </div>
-          <p className="text-neutral-500">Welcome to NextMatch</p>
+          <p className="text-neutral-500">Welcome to Store</p>
         </div>
       </CardHeader>
       <CardBody>

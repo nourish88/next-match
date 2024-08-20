@@ -1,7 +1,10 @@
+import CustomerAddForm from "./CustomerAddForm";
 
 
 export default function CustomerAddPage() {
   return (
-    <div>page</div>
+    <div className="flex items-center justify-center vertical-center">
+      <CustomerAddForm></CustomerAddForm>
+    </div>
   )
 }
