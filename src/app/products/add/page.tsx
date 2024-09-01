@@ -1,9 +1,14 @@
+import { getAllBrands } from "@/app/actions/brandActions";
 
-export default function ProductAddPage
-() {
+import { Group } from "@prisma/client";
+import ProductAddForm from "./ProductAddForm";
+
+export default async function ProductAddPage() {
+  const groupsResult: Group[] = await getAllBrands();
+
   return (
-    <div>ProductAddPage
-
+    <div className="flex items-center justify-center vertical-center">
+      <ProductAddForm groups={groupsResult} />
     </div>
-  )
+  );
 }
