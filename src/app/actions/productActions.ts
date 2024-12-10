@@ -8,6 +8,70 @@ import {
 } from "@/lib/schemas/Products/productSchema";
 import { Medicine } from "@prisma/client";
 
+export interface GetMedicinesParams {
+  name?: string;
+  groupId?: number;
+}
+export interface MedicineDto {
+  id: number;
+  name: string | null;
+  groupName: string | null;
+  createdAt?: Date;
+}
+
+export async function getMedicine(
+  params: GetMedicinesParams = {}
+): Promise<ActionResult<MedicineDto[]>> {
+  const session = await auth();
+
+  try {
+    // Ensure the user is authenticated
+    if (!session?.user?.id) {
+      return { status: "error", error: "Not authenticated" };
+    }
+
+    // Build a Prisma query object based on the provided filters
+    const { name, groupId } = params;
+    console.log(groupId);
+    const whereClause: any = {}; // Use `any` for flexibility
+
+    if (name) {
+      whereClause.name = {
+        contains: name,
+        mode: "insensitive",
+      };
+    }
+    if (groupId) {
+      whereClause.groupId = {
+        equals: +groupId,
+      };
+    }
+    // Fetch medicines with the related group
+    const medicines = await prisma.medicine.findMany({
+      where: whereClause,
+      include: {
+        group: true, // Include the entire group object
+      },
+      orderBy: {
+        createdAt: "desc", // Order medicines by creation date
+      },
+    });
+
+    const transformedMedicines: MedicineDto[] = medicines.map((medicine) => ({
+      groupName: medicine.group?.name || null,
+      id: medicine.id,
+      createdAt: medicine.createdAt,
+      name: medicine.name,
+    }));
+
+    console.log(transformedMedicines);
+
+    return { status: "success", data: transformedMedicines };
+  } catch (error) {
+    console.error("Error fetching medicines:", error);
+    return { status: "error", error: "Something went wrong" };
+  }
+}
 export async function createProduct(
   data: ProductSchema
 ): Promise<ActionResult<Medicine>> {

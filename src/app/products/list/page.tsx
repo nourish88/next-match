@@ -1,7 +1,7 @@
+import MedicinesGetForm from "./MedicineGetForm";
+import { getAllBrands } from "@/app/actions/brandActions";
 
-
-export default function ProductsListPage() {
-  return (
-    <div>ProductsListPage</div>
-  )
+export default async function ProductsListPage() {
+  var groups = await getAllBrands();
+  return <MedicinesGetForm groups={groups} />;
 }

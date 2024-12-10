@@ -1,7 +1,8 @@
-import React from 'react'
-
+import GroupsFrom from "./GroupsForm";
 export default function BrandListPage() {
   return (
-    <div>BrandListPage</div>
-  )
+    <>
+      <GroupsFrom></GroupsFrom>
+    </>
+  );
 }
