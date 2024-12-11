@@ -89,9 +89,11 @@ export default function CustomersGetForm() {
           {/* Data Table */}
         </CardBody>
       </Card>
-      {customers?.length > 0 && (
-        <CustomersList customers={customers}></CustomersList>
-      )}
+      <div>
+        {customers?.length > 0 && (
+          <CustomersList customers={customers}></CustomersList>
+        )}
+      </div>
     </>
   );
 }

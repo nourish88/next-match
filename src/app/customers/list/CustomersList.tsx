@@ -8,6 +8,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  getKeyValue,
 } from "@nextui-org/react";
 import { Customer } from "@prisma/client";
 import { FiList } from "react-icons/fi";
@@ -15,7 +16,22 @@ import { FiList } from "react-icons/fi";
 interface Props {
   customers: Customer[]; // Define the props to accept an array of customers
 }
-export default function CustomersList({ customers }: Props) {
+function CustomersList({ customers }: Props) {
+  const rows = customers.map((customer) => ({
+    key: customer.id.toString(),
+    id: customer.id,
+    ad: customer.name,
+    soyad: customer.surName,
+    email: customer.email,
+    createdAt: customer.createdAt.toLocaleDateString(),
+  }));
+  const columns = [
+    { key: "id", label: "Müşteri Id" },
+    { key: "ad", label: "Ad" },
+    { key: "soyad", label: "Soyad" },
+    { key: "email", label: "Email" },
+    { key: "createdAt", label: "Oluşturulma Tarihi" },
+  ];
   return (
     <Card className="w-4/5 mx-auto mt-8">
       <CardHeader className="flex flex-col items-center justify-center">
@@ -27,34 +43,27 @@ export default function CustomersList({ customers }: Props) {
       <CardBody>
         <Table
           aria-label="Customer List"
-          className="overflow-hidden"
+          className="gap-2"
           isStriped
-          isCompact
           style={{
             height: "auto",
             minWidth: "100%",
             maxWidth: "100%",
           }}
         >
-          <TableHeader>
-            <TableColumn>Müşteri ID</TableColumn>
-            <TableColumn>Ad</TableColumn>
-            <TableColumn>Soyad</TableColumn>
-            <TableColumn>Email</TableColumn>
-            <TableColumn>Oluşturulma Tarihi</TableColumn>
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn key={column.key}>{column.label}</TableColumn>
+            )}
           </TableHeader>
-          <TableBody>
-            {customers.map((customer) => (
-              <TableRow key={customer.id}>
-                <TableCell>{customer.id}</TableCell>
-                <TableCell>{customer.name}</TableCell>
-                <TableCell>{customer.surName}</TableCell>
-                <TableCell>{customer.email}</TableCell>
-                <TableCell>
-                  {new Date(customer.createdAt).toLocaleDateString()}
-                </TableCell>
+          <TableBody items={rows}>
+            {(item) => (
+              <TableRow key={item.id.toString()}>
+                {(columnKey) => (
+                  <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                )}
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
 
@@ -63,3 +72,5 @@ export default function CustomersList({ customers }: Props) {
     </Card>
   );
 }
+
+export default CustomersList;
