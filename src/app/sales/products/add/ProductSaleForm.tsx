@@ -135,14 +135,19 @@ function ProductSaleForm({ customers, medicines }: Props) {
                   value={selectedCustomer!}
                   placeholder="Müşteri seçiniz"
                 >
-                  {customers.map((customer) => (
-                    <SelectItem
-                      value={customer.id.toString()}
-                      key={customer.id}
-                    >
-                      {customer.name}
-                    </SelectItem>
-                  ))}
+                  {customers.map((customer) => {
+                    // Define fullName by combining customer.name and customer.surName
+                    const fullName = `${customer.name} ${customer.surName}`;
+
+                    return (
+                      <SelectItem
+                        value={customer.id.toString()}
+                        key={customer.id}
+                      >
+                        {fullName}
+                      </SelectItem>
+                    );
+                  })}
                 </Select>
               </div>
               <div className="flex-auto w-50">
@@ -236,7 +241,7 @@ function ProductSaleForm({ customers, medicines }: Props) {
           </form>
         </CardBody>
       </Card>
-      {/* Toast container for notifications */}
+
       <ToastContainer />
     </>
   );

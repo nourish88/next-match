@@ -93,7 +93,7 @@ function BrandSaleForm({ customers, brands }: Props) {
         klik?.click();
       }
     } catch (error) {
-      toast.error("Satış kaydedilirken bir hata oluştu.");
+      toast.error(error!.toString());
     } finally {
       setIsLoading(false); // Unblock the page
     }
@@ -135,14 +135,19 @@ function BrandSaleForm({ customers, brands }: Props) {
                   value={selectedCustomer!}
                   placeholder="Müşteri seçiniz"
                 >
-                  {customers.map((customer) => (
-                    <SelectItem
-                      value={customer.id.toString()}
-                      key={customer.id}
-                    >
-                      {customer.name}
-                    </SelectItem>
-                  ))}
+                  {customers.map((customer) => {
+                    // Define fullName by combining customer.name and customer.surName
+                    const fullName = `${customer.name} ${customer.surName}`;
+
+                    return (
+                      <SelectItem
+                        value={customer.id.toString()}
+                        key={customer.id}
+                      >
+                        {fullName}
+                      </SelectItem>
+                    );
+                  })}
                 </Select>
               </div>
               <div className="flex-auto w-50">

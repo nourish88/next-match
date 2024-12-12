@@ -78,6 +78,7 @@ export default function MedicinesGetForm({ groups }: Props) {
             <Select
               onChange={handleChange}
               name="groupId"
+              
               items={groups}
               placeholder="Marka seçiniz"
             >

@@ -73,14 +73,14 @@ export default function CustomersGetForm() {
               onChange={handleChange}
               variant="bordered"
             />
-            <Input
+            {/* <Input
               aria-label="Email"
               name="email"
               placeholder="Email ile Ara"
               value={filters.email}
               onChange={handleChange}
               variant="bordered"
-            />
+            /> */}
             <Button type="submit" color="secondary" isLoading={loading}>
               Ara
             </Button>

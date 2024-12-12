@@ -22,14 +22,14 @@ function CustomersList({ customers }: Props) {
     id: customer.id,
     ad: customer.name,
     soyad: customer.surName,
-    email: customer.email,
+    phoneNumber: customer.phoneNumber,
     createdAt: customer.createdAt.toLocaleDateString(),
   }));
   const columns = [
     { key: "id", label: "Müşteri Id" },
     { key: "ad", label: "Ad" },
     { key: "soyad", label: "Soyad" },
-    { key: "email", label: "Email" },
+    { key: "phoneNumber", label: "Telefon" },
     { key: "createdAt", label: "Oluşturulma Tarihi" },
   ];
   return (
