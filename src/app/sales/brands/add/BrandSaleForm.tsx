@@ -201,6 +201,7 @@ function BrandSaleForm({ customers, brands }: Props) {
                 type="button"
                 className="ml-2"
                 color="secondary"
+                isDisabled={groupEntries.some((product) => product.id === null)}
               >
                 <IoIosAddCircle />
                 Yeni Marka Ekle

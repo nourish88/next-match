@@ -204,6 +204,9 @@ function ProductSaleForm({ customers, medicines }: Props) {
                 type="button"
                 className="ml-2"
                 color="secondary"
+                isDisabled={productEntries.some(
+                  (product) => product.id === null
+                )}
               >
                 <IoIosAddCircle />
                 Yeni Marka Ekle
