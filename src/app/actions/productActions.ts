@@ -18,7 +18,12 @@ export interface MedicineDto {
   groupName: string | null;
   createdAt?: Date;
 }
+export async function getAllMedicines(): Promise<Medicine[]> {
+  const res = await prisma.medicine.findMany();
+  console.log(res);
 
+  return res;
+}
 export async function getMedicine(
   params: GetMedicinesParams = {}
 ): Promise<ActionResult<MedicineDto[]>> {

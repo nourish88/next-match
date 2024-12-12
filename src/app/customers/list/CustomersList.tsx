@@ -66,8 +66,6 @@ function CustomersList({ customers }: Props) {
             )}
           </TableBody>
         </Table>
-
-        {/* Data Table */}
       </CardBody>
     </Card>
   );
