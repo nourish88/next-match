@@ -1,13 +1,24 @@
 "use client";
 
 import { Group } from "@prisma/client";
-import { Card, CardHeader, CardBody, Input, Button } from "@nextui-org/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Input,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 import { useState } from "react";
 import { FiUsers } from "react-icons/fi";
 import GroupsList from "./GroupsList";
 import { getBrands } from "@/app/actions/brandActions";
+import { IoSearchSharp } from "react-icons/io5";
+import { IoMdAdd } from "react-icons/io";
+import BrandAddModal from "../add/BrandAddModal";
 
 export default function GroupsForm() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [groups, setGroups] = useState<Group[]>([]);
   const [filters, setFilters] = useState({
     name: "",
@@ -50,7 +61,7 @@ export default function GroupsForm() {
         <CardHeader className="flex flex-col items-center justify-center">
           <div className="flex flex-row items-center gap-3">
             <FiUsers size={30} />
-            <h1 className="text-3xl font-semibold">Marka Sorgulama</h1>
+            <h1 className="text-3xl font-semibold">Marka Sorgulama </h1>
           </div>
         </CardHeader>
         <CardBody>
@@ -66,14 +77,30 @@ export default function GroupsForm() {
             />
 
             <Button type="submit" color="secondary" isLoading={loading}>
+              <span className="text-xl">
+                <IoSearchSharp />
+              </span>
               Ara
             </Button>
           </form>
+          <div className="flex">
+            <Button onPress={onOpen} color="primary">
+              <span className="text-xl">
+                <IoMdAdd />
+              </span>
+              Yeni Ekle
+            </Button>
+          </div>
 
           {/* Data Table */}
         </CardBody>
       </Card>
-      <GroupsList groups={groups} />
+      <div>{groups?.length > 0 && <GroupsList groups={groups} />}</div>
+
+      <BrandAddModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      ></BrandAddModal>
     </>
   );
 }

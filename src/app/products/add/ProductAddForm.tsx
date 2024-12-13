@@ -22,9 +22,13 @@ import { toast } from "react-toastify";
 
 interface ProductAddFormProps {
   groups: Group[];
+  onClose: () => void;
 }
 
-export default function ProductAddForm({ groups }: ProductAddFormProps) {
+export default function ProductAddForm({
+  groups,
+  onClose,
+}: ProductAddFormProps) {
   const {
     register,
     handleSubmit,
@@ -47,7 +51,7 @@ export default function ProductAddForm({ groups }: ProductAddFormProps) {
     console.log(data);
     const result = await createProduct(data);
     if (result.status === "success") {
-      console.log("Product created successfully");
+      onClose();
       toast.success("Product created successfully");
     } else {
       if (Array.isArray(result.error)) {
@@ -62,59 +66,47 @@ export default function ProductAddForm({ groups }: ProductAddFormProps) {
   };
 
   return (
-    <Card className="w-2/5 mx-auto">
-      <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-secondary">
-          <div className="flex flex-row items-center gap-3">
-            <GiBrandyBottle size={30} />
-            <h1 className="text-3xl font-semibold">Ürün Ekleme Formu</h1>
-          </div>
-        </div>
-      </CardHeader>
-      <CardBody>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-4">
-            <Input
-              defaultValue=""
-              label="Ad"
-              variant="bordered"
-              {...register("name")}
-              isInvalid={!!errors.name}
-              errorMessage={errors.name?.message}
-            />
-            {errors.root?.serverError && (
-              <p className="text-danger text-sm">
-                {errors.root.serverError.message}
-              </p>
-            )}
-            <Autocomplete
-              variant="bordered"
-              label="Select a Group"
-              placeholder="Choose a group"
-              className="w-full"
-              selectedKey={value?.toString()}
-              onSelectionChange={(key) => onChange(Number(key))}
-              isInvalid={!!errors.groupId}
-              errorMessage={errors.groupId?.message}
-            >
-              {groups.map((group) => (
-                <AutocompleteItem key={group.id} value={group.id}>
-                  {group.name}
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
-            <Button
-              isLoading={isSubmitting}
-              isDisabled={!isValid}
-              fullWidth
-              color="secondary"
-              type="submit"
-            >
-              Kaydet
-            </Button>
-          </div>
-        </form>
-      </CardBody>
-    </Card>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="space-y-4">
+        <Input
+          defaultValue=""
+          label="Ad"
+          variant="bordered"
+          {...register("name")}
+          isInvalid={!!errors.name}
+          errorMessage={errors.name?.message}
+        />
+        {errors.root?.serverError && (
+          <p className="text-danger text-sm">
+            {errors.root.serverError.message}
+          </p>
+        )}
+        <Autocomplete
+          variant="bordered"
+          label="Select a Group"
+          placeholder="Choose a group"
+          className="w-full"
+          selectedKey={value?.toString()}
+          onSelectionChange={(key) => onChange(Number(key))}
+          isInvalid={!!errors.groupId}
+          errorMessage={errors.groupId?.message}
+        >
+          {groups.map((group) => (
+            <AutocompleteItem key={group.id} value={group.id}>
+              {group.name}
+            </AutocompleteItem>
+          ))}
+        </Autocomplete>
+        <Button
+          isLoading={isSubmitting}
+          isDisabled={!isValid}
+          fullWidth
+          color="secondary"
+          type="submit"
+        >
+          Kaydet
+        </Button>
+      </div>
+    </form>
   );
 }

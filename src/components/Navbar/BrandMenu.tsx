@@ -38,7 +38,7 @@ export default function CustomerMenu({ name }: Props) {
           base: "gap-2",
         }}
       >
-        <DropdownItem
+        {/* <DropdownItem
           as={Link}
           href="/brands/add"
           key="ekleme"
@@ -46,15 +46,15 @@ export default function CustomerMenu({ name }: Props) {
           startContent={icons.add}
         >
           Ekleme
-        </DropdownItem>
+        </DropdownItem> */}
         <DropdownItem
           as={Link}
           href="/brands/list"
           key="sorgulama"
-          description="Eklenmiş markaları sorgulamak için tıklayınız."
+          description="Eklenmiş markaları sorgulamak  ve yeni marka için tıklayınız."
           startContent={icons.search}
         >
-          Sorgulama
+          Ekleme/Sorgulama
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

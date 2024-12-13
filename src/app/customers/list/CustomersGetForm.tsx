@@ -1,16 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardHeader, CardBody, Input, Button } from "@nextui-org/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Input,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
 import { FiUsers } from "react-icons/fi";
 import { getCustomers } from "@/app/actions/customerActions";
 import { Customer } from "@prisma/client";
 import CustomersList from "./CustomersList";
 
+import CustomerAddModal from "../add/CustomerAddModal";
+import { IoMdAdd } from "react-icons/io";
+import { IoSearchSharp } from "react-icons/io5";
+
 // Define the Customer type
 
 export default function CustomersGetForm() {
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [filters, setFilters] = useState({
     name: "",
     surName: "",
@@ -82,11 +99,20 @@ export default function CustomersGetForm() {
               variant="bordered"
             /> */}
             <Button type="submit" color="secondary" isLoading={loading}>
+              <span className="text-xl">
+                <IoSearchSharp />
+              </span>
               Ara
             </Button>
           </form>
-
-          {/* Data Table */}
+          <div className="flex">
+            <Button onPress={onOpen} color="primary">
+              <span className="text-xl">
+                <IoMdAdd />
+              </span>
+              Yeni Ekle
+            </Button>
+          </div>
         </CardBody>
       </Card>
       <div>
@@ -94,6 +120,34 @@ export default function CustomersGetForm() {
           <CustomersList customers={customers}></CustomersList>
         )}
       </div>
+      <CustomerAddModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      ></CustomerAddModal>
+      {/* <Modal
+        isDismissable={false}
+        isKeyboardDismissDisabled={true}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Müşteri Ekleme Formu
+              </ModalHeader>
+              <ModalBody>
+                <CustomerAddForm></CustomerAddForm>
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="light" onPress={onClose}>
+                  Kapat
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal> */}
     </>
   );
 }

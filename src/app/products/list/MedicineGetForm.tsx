@@ -13,16 +13,21 @@ import {
   Input,
   Select,
   SelectItem,
+  useDisclosure,
 } from "@nextui-org/react";
-import { Group, Medicine } from "@prisma/client";
+import { Group } from "@prisma/client";
 import { useState } from "react";
 import MedicinesList from "./MedicineList";
+import ProductAddModal from "../add/ProductAddModal";
+import { IoSearchSharp } from "react-icons/io5";
+import { IoMdAdd } from "react-icons/io";
 
 interface Props {
   groups: Group[];
 }
 
 export default function MedicinesGetForm({ groups }: Props) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [medicines, setMedicines] = useState<MedicineDto[]>([]);
   const [filters, setFilters] = useState<GetMedicinesParams>({});
 
@@ -78,7 +83,6 @@ export default function MedicinesGetForm({ groups }: Props) {
             <Select
               onChange={handleChange}
               name="groupId"
-              
               items={groups}
               placeholder="Marka seçiniz"
             >
@@ -89,15 +93,30 @@ export default function MedicinesGetForm({ groups }: Props) {
               )}
             </Select>
             <Button type="submit" color="secondary" isLoading={loading}>
+              <span className="text-xl">
+                <IoSearchSharp />
+              </span>
               Ara
             </Button>
           </form>
-          {/* Data Table */}
+          <div className="flex">
+            <Button onPress={onOpen} color="primary">
+              <span className="text-xl">
+                <IoMdAdd />
+              </span>
+              Yeni Ekle
+            </Button>
+          </div>
         </CardBody>
       </Card>
       {medicines?.length > 0 && (
         <MedicinesList medicines={medicines}></MedicinesList>
       )}
+      <ProductAddModal
+        groups={groups}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      ></ProductAddModal>
     </>
   );
 }
