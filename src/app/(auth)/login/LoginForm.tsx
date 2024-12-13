@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 export default function LoginForm() {
-    const router = useRouter();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -23,9 +23,9 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginSchema) => {
     const result = await signInUser(data);
-    console.log(result)
+    console.log(result);
     if (result.status === "success") {
-      router.push("/members");
+      router.push("/sales/products/add");
       router.refresh();
     } else {
       toast.error(result.error as string);
@@ -44,7 +44,7 @@ export default function LoginForm() {
         </div>
       </CardHeader>
       <CardBody>
-        <form  onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <Input
               defaultValue=""
