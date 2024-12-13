@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url     = "mysecret"
+  url      = env("DATABASE_URL")
 }
 model EntityBase {
   id Int @id @default(autoincrement())
