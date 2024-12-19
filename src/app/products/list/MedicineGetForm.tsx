@@ -80,6 +80,14 @@ export default function MedicinesGetForm({ groups }: Props) {
               onChange={handleChange}
               variant="bordered"
             />
+            <Input
+              aria-label="Barcode"
+              name="barcode"
+              placeholder="Search by barcode"
+              value={filters.barcode}
+              onChange={handleChange}
+              variant="bordered"
+            />
             <Select
               onChange={handleChange}
               name="groupId"

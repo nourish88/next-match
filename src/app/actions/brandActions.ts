@@ -42,7 +42,7 @@ export async function getBrands(
     const customers: Group[] = (await prisma.group.findMany({
       where: whereClause,
       orderBy: {
-        createdAt: "desc", // Order customers by creation date
+        createdAt: "asc", // Order customers by creation date
       },
     })) as Group[];
     console.log(customers);

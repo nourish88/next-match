@@ -10,14 +10,11 @@ import {
   Autocomplete,
   AutocompleteItem,
   Button,
-  Card,
-  CardBody,
-  CardHeader,
   Input,
 } from "@nextui-org/react";
 import { Group } from "@prisma/client";
 import { useForm, useController } from "react-hook-form";
-import { GiBrandyBottle } from "react-icons/gi";
+
 import { toast } from "react-toastify";
 
 interface ProductAddFormProps {
@@ -56,7 +53,7 @@ export default function ProductAddForm({
     } else {
       if (Array.isArray(result.error)) {
         result.error.forEach((e: any) => {
-          const fieldName = e.path.join(".") as "name" | "groupId";
+          const fieldName = e.path.join(".") as "name" | "groupId" | "barcode";
           setError(fieldName, { message: e.message });
         });
       } else {
@@ -75,6 +72,19 @@ export default function ProductAddForm({
           {...register("name")}
           isInvalid={!!errors.name}
           errorMessage={errors.name?.message}
+        />
+        {errors.root?.serverError && (
+          <p className="text-danger text-sm">
+            {errors.root.serverError.message}
+          </p>
+        )}
+        <Input
+          defaultValue=""
+          label="Barkod"
+          variant="bordered"
+          {...register("barcode")}
+          isInvalid={!!errors.barcode}
+          errorMessage={errors.barcode?.message}
         />
         {errors.root?.serverError && (
           <p className="text-danger text-sm">

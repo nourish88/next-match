@@ -11,10 +11,12 @@ import { Medicine } from "@prisma/client";
 export interface GetMedicinesParams {
   name?: string;
   groupId?: number;
+  barcode?: string;
 }
 export interface MedicineDto {
   id: number;
   name: string | null;
+  barcode: string | null;
   groupName: string | null;
   createdAt?: Date;
 }
@@ -36,7 +38,7 @@ export async function getMedicine(
     }
 
     // Build a Prisma query object based on the provided filters
-    const { name, groupId } = params;
+    const { name, groupId, barcode } = params;
     console.log(groupId);
     const whereClause: any = {}; // Use `any` for flexibility
 
@@ -51,6 +53,11 @@ export async function getMedicine(
         equals: +groupId,
       };
     }
+    if (barcode) {
+      whereClause.barcode = {
+        equals: barcode,
+      };
+    }
     // Fetch medicines with the related group
     const medicines = await prisma.medicine.findMany({
       where: whereClause,
@@ -58,13 +65,14 @@ export async function getMedicine(
         group: true, // Include the entire group object
       },
       orderBy: {
-        createdAt: "desc", // Order medicines by creation date
+        id: "asc", // Order medicines by creation date
       },
     });
 
     const transformedMedicines: MedicineDto[] = medicines.map((medicine) => ({
       groupName: medicine.group?.name || null,
       id: medicine.id,
+      barcode: medicine.barcode,
       createdAt: medicine.createdAt,
       name: medicine.name,
     }));
@@ -89,7 +97,7 @@ export async function createProduct(
       return { status: "error", error: validated.error.errors };
     }
 
-    const { name, groupId } = validated.data;
+    const { name, groupId, barcode } = validated.data;
 
     const createdAt = new Date();
 
@@ -99,11 +107,15 @@ export async function createProduct(
     console.log(existingProduct);
     if (existingProduct)
       return { status: "error", error: "Product already exists" };
-
+    console.log("asdad");
+    console.log(barcode);
+    console.log(name);
     const user = await prisma.medicine.create({
       data: {
         name,
+        barcode,
         groupId,
+
         createdAt,
         userid: session?.user?.id ?? "",
       },

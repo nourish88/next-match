@@ -8,11 +8,6 @@ import {
   Input,
   Button,
   useDisclosure,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
 } from "@nextui-org/react";
 import { FiUsers } from "react-icons/fi";
 import { getCustomers } from "@/app/actions/customerActions";

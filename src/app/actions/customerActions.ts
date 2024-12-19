@@ -54,7 +54,7 @@ export async function getCustomers(
     const customers: Customer[] = (await prisma.customer.findMany({
       where: whereClause,
       orderBy: {
-        createdAt: "desc", // Order customers by creation date
+        createdAt: "asc", // Order customers by creation date
       },
     })) as Customer[];
     console.log(customers);

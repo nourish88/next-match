@@ -34,6 +34,7 @@ model Group {
 model Medicine {
   id      Int     @id @default(autoincrement())
   name    String?
+  barcode String?
   price   Decimal?
   groupId Int?
   group   Group?  @relation(fields: [groupId], references: [id],onDelete: Cascade)

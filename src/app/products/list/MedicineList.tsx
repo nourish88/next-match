@@ -10,7 +10,6 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
-import { Medicine } from "@prisma/client";
 
 import { FiList } from "react-icons/fi";
 
@@ -42,6 +41,7 @@ export default function MedicinesList({ medicines }: Props) {
             <TableColumn>Ürün Id</TableColumn>
             <TableColumn>Ürün Adı</TableColumn>
             <TableColumn>Marka Adı</TableColumn>
+            <TableColumn>Barkod</TableColumn>
             <TableColumn>Oluşturulma Tarihi</TableColumn>
           </TableHeader>
           <TableBody>
@@ -50,7 +50,7 @@ export default function MedicinesList({ medicines }: Props) {
                 <TableCell>{medicine.id}</TableCell>
                 <TableCell>{medicine.name}</TableCell>
                 <TableCell>{medicine.groupName}</TableCell>
-
+                <TableCell>{medicine.barcode}</TableCell>
                 <TableCell>
                   {new Date(medicine.createdAt!).toLocaleDateString()}
                 </TableCell>
