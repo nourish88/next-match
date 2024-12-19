@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const productSchema = z.object({
   name: z.string().min(3),
-  barcode: z.string().min(3),
+  barcode: z.string().optinal(),
   groupId: z.number().max(1000).int().positive(),
 });
 
