@@ -4,8 +4,8 @@ import CardTitle from "@/components/General/CardHeader";
 import {
   Card,
   CardBody,
-  Select,
-  SelectItem,
+  Autocomplete,
+  AutocompleteItem,
   Button,
   Input,
 } from "@nextui-org/react";
@@ -27,8 +27,8 @@ export default function BrandSaleList({ brands, customers }: Props) {
   const [endDate, setEndDate] = useState<string>(
     new Date().toISOString().split("T")[0]
   );
-  const [selectedCustomer, setSelectedCustomer] = useState<number | null>(null);
-  const [selectedBrand, setSelectedBrand] = useState<number | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [salesData, setSalesData] = useState<BrandSaleDto[]>([]);
   const handleSubmit = async (event: React.FormEvent) => {
@@ -37,8 +37,8 @@ export default function BrandSaleList({ brands, customers }: Props) {
     setIsLoading(true); // Block the page
     try {
       const result: BrandSaleDto[] = await getBrandSale({
-        customerId: selectedCustomer,
-        brandId: selectedBrand,
+        customerId: selectedCustomer ? parseInt(selectedCustomer) : null,
+        brandId: selectedBrand ? parseInt(selectedBrand) : null,
         startDate: date,
         endDate: endDate,
       });
@@ -64,42 +64,45 @@ export default function BrandSaleList({ brands, customers }: Props) {
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Select
+                <Autocomplete
                   name="customerId"
-                  onChange={(e) => setSelectedCustomer(+e.target.value)}
-                  value={selectedCustomer!}
+                  value={selectedCustomer || ""}
                   placeholder="Müşteri seçiniz"
-                  className="w-full"
+                  onSelectionChange={(key) =>
+                    setSelectedCustomer(key as string)
+                  }
                 >
                   {customers.map((customer) => {
                     // Define fullName by combining customer.name and customer.surName
                     const fullName = `${customer.name} ${customer.surName}`;
 
                     return (
-                      <SelectItem
-                        value={customer.id.toString()}
+                      <AutocompleteItem
                         key={customer.id}
+                        value={customer.id.toString()}
                       >
                         {fullName}
-                      </SelectItem>
+                      </AutocompleteItem>
                     );
                   })}
-                </Select>
+                </Autocomplete>
               </div>
               <div>
-                <Select
+                <Autocomplete
                   name="brandId"
-                  value={selectedBrand!}
+                  value={selectedBrand || ""}
                   placeholder="Marka seçiniz"
-                  onChange={(e) => setSelectedBrand(+e.target.value)}
-                  className="w-full"
+                  onSelectionChange={(key) => setSelectedBrand(key as string)}
                 >
                   {brands.map((brand) => (
-                    <SelectItem value={brand.id.toString()} key={brand.id}>
+                    <AutocompleteItem
+                      key={brand.id}
+                      value={brand.id.toString()}
+                    >
                       {brand.name}
-                    </SelectItem>
+                    </AutocompleteItem>
                   ))}
-                </Select>
+                </Autocomplete>
               </div>
             </div>
 

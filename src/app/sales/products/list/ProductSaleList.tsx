@@ -4,8 +4,8 @@ import CardTitle from "@/components/General/CardHeader";
 import {
   Card,
   CardBody,
-  Select,
-  SelectItem,
+  Autocomplete,
+  AutocompleteItem,
   Button,
   Input,
 } from "@nextui-org/react";
@@ -26,8 +26,8 @@ function ProductSaleList({ medicines, customers }: Props) {
   const [endDate, setEndDate] = useState<string>(
     new Date().toISOString().split("T")[0]
   );
-  const [selectedCustomer, setSelectedCustomer] = useState<number | null>(null);
-  const [selectedMedicine, setSelectedMedicine] = useState<number | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null);
+  const [selectedMedicine, setSelectedMedicine] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [salesData, setSalesData] = useState<MedicineSaleDto[]>([]);
   const handleSubmit = async (event: React.FormEvent) => {
@@ -36,8 +36,8 @@ function ProductSaleList({ medicines, customers }: Props) {
     setIsLoading(true); // Block the page
     try {
       const result: MedicineSaleDto[] = await getProductSale({
-        customerId: selectedCustomer,
-        productId: selectedMedicine,
+        customerId: selectedCustomer ? parseInt(selectedCustomer) : null,
+        productId: selectedMedicine ? parseInt(selectedMedicine) : null,
         startDate: date,
         endDate: endDate,
       });
@@ -63,43 +63,50 @@ function ProductSaleList({ medicines, customers }: Props) {
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Select
+                <Autocomplete
                   name="customerId"
-                  onChange={(e) => setSelectedCustomer(+e.target.value)}
-                  value={selectedCustomer!}
+                  value={selectedCustomer || ""}
                   placeholder="Müşteri seçiniz"
+                  onSelectionChange={(key) =>
+                    setSelectedCustomer(key as string)
+                  }
                 >
                   {customers.map((customer) => {
                     // Define fullName by combining customer.name and customer.surName
                     const fullName = `${customer.name} ${customer.surName}`;
 
                     return (
-                      <SelectItem
-                        value={customer.id.toString()}
+                      <AutocompleteItem
                         key={customer.id}
+                        value={customer.id.toString()}
                       >
                         {fullName}
-                      </SelectItem>
+                      </AutocompleteItem>
                     );
                   })}
-                </Select>
+                </Autocomplete>
               </div>
               <div>
-                <Select
+                <Autocomplete
                   name="medicineId"
-                  value={selectedMedicine!}
+                  value={selectedMedicine || ""}
                   placeholder="Ürün seçiniz"
-                  onChange={(e) => setSelectedMedicine(+e.target.value)}
+                  onSelectionChange={(key) =>
+                    setSelectedMedicine(key as string)
+                  }
                 >
-                  {medicines.map((medicines) => (
-                    <SelectItem
-                      value={medicines.id.toString()}
-                      key={medicines.id}
-                    >
-                      {medicines.name}
-                    </SelectItem>
-                  ))}
-                </Select>
+                  {medicines.map((medicine) => {
+                    const productName = `${medicine.name} (${medicine.barcode})`;
+                    return (
+                      <AutocompleteItem
+                        key={medicine.id}
+                        value={medicine.id.toString()}
+                      >
+                        {productName}
+                      </AutocompleteItem>
+                    );
+                  })}
+                </Autocomplete>
               </div>
             </div>
 
