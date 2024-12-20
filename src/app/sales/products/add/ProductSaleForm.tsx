@@ -135,7 +135,9 @@ function ProductSaleForm({ customers, medicines }: Props) {
                   name="customerId"
                   value={selectedCustomer || ""}
                   placeholder="Müşteri seçiniz"
-                  onSelectionChange={(key) => setSelectedCustomer(key)}
+                  onSelectionChange={(key) =>
+                    setSelectedCustomer(key as string)
+                  }
                 >
                   {customers.map((customer) => {
                     // Define fullName by combining customer.name and customer.surName
