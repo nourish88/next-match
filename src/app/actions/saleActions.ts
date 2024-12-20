@@ -116,8 +116,6 @@ export async function getProductSale(
         customer: true, // Include related Customer details
       },
     });
-    console.log("nuriş");
-    console.log(sales);
 
     // Flatten and group the data
     const groupedData = sales
@@ -156,7 +154,7 @@ export async function getProductSale(
         acc[key].amount += curr.amount; // Aggregate the amount
         return acc;
       }, {});
-    console.log("nuriş 2");
+
     // Convert grouped data into an array
     const resultList = Object.values(groupedData);
 
@@ -165,12 +163,8 @@ export async function getProductSale(
       ? resultList.filter((item) => item.medicineId === productId)
       : resultList;
 
-    console.log("nuriş4");
-    console.log(filteredList);
-
     return filteredList;
   } catch (error) {
-    console.log("nuriş5");
     console.error("Error fetching product sales:", error);
     throw new Error("An error occurred while fetching product sales");
   }

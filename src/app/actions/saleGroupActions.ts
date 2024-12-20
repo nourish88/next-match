@@ -76,7 +76,7 @@ export default async function getBrandSale(
         acc[key].amount += curr.amount; // Aggregate the amount
         return acc;
       }, {});
-    console.log("nuriş 2");
+
     // Convert grouped data into an array
     const resultList = Object.values(groupedData);
 
@@ -85,11 +85,8 @@ export default async function getBrandSale(
       ? resultList.filter((item) => item.brandId === brandId)
       : resultList;
 
-    console.log(filteredList);
-
     return filteredList;
   } catch (error) {
-    console.log("nuriş5");
     console.error(error!.toString(), error);
     throw new Error(error!.toString());
   }
