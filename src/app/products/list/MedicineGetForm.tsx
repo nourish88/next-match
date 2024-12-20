@@ -75,7 +75,7 @@ export default function MedicinesGetForm({ groups }: Props) {
             <Input
               aria-label="Medicine Name"
               name="name"
-              placeholder="Search by Medicine Name"
+              placeholder="İlaç ismine göre ara"
               value={filters.name}
               onChange={handleChange}
               variant="bordered"
@@ -83,7 +83,7 @@ export default function MedicinesGetForm({ groups }: Props) {
             <Input
               aria-label="Barcode"
               name="barcode"
-              placeholder="Search by barcode"
+              placeholder="Barkada göre ara"
               value={filters.barcode}
               onChange={handleChange}
               variant="bordered"

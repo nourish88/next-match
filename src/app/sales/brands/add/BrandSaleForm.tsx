@@ -14,7 +14,7 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 import { Customer, Group } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { HiOutlineSave } from "react-icons/hi";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
@@ -35,7 +35,7 @@ function BrandSaleForm({ customers, brands }: Props) {
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
 
   // Validate the form dynamically
-  const isFormValid = (): boolean => {
+  const isFormValid = useCallback((): boolean => {
     if (!date || !selectedCustomer) return false;
     for (let i = 0; i < groupEntries.length; i++) {
       if (!groupEntries[i].id || !amountEntries[i].amount) {
@@ -43,7 +43,7 @@ function BrandSaleForm({ customers, brands }: Props) {
       }
     }
     return true;
-  };
+  }, [date, selectedCustomer, groupEntries, amountEntries]);
 
   // Recalculate button disable state whenever a form field changes
   const handleInputChange = (
@@ -114,7 +114,7 @@ function BrandSaleForm({ customers, brands }: Props) {
   // Recalculate button disable state whenever a form field changes
   useEffect(() => {
     setIsSaveDisabled(!isFormValid());
-  }, [date, selectedCustomer, groupEntries, amountEntries]);
+  }, [date, selectedCustomer, groupEntries, amountEntries, isFormValid]);
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -127,10 +127,11 @@ function BrandSaleForm({ customers, brands }: Props) {
         <CardTitle header="Marka Satış Formu"></CardTitle>
         <CardBody>
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-2">
-              <div className="flex-auto w-50">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="mb-4">
                 <Select
                   name="customerId"
+                  className="w-full"
                   onChange={(e) => setSelectedCustomer(e.target.value)}
                   value={selectedCustomer!}
                   placeholder="Müşteri seçiniz"
@@ -150,8 +151,9 @@ function BrandSaleForm({ customers, brands }: Props) {
                   })}
                 </Select>
               </div>
-              <div className="flex-auto w-50">
+              <div>
                 <Input
+                  className="w-full"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   type="date"
@@ -160,12 +162,13 @@ function BrandSaleForm({ customers, brands }: Props) {
             </div>
 
             {groupEntries.map((entry, index) => (
-              <div key={index} className="flex gap-2 mt-4">
-                <div className="flex-auto w-50">
+              <div key={index} className="grid grid-cols-2 gap-4">
+                <div>
                   <Select
                     name="brandId"
                     value={entry.id || ""}
                     placeholder="Marka seçiniz"
+                    className="w-full"
                     onChange={(e) =>
                       handleInputChange(index, "id", e.target.value)
                     }
@@ -177,10 +180,11 @@ function BrandSaleForm({ customers, brands }: Props) {
                     ))}
                   </Select>
                 </div>
-                <div className="flex-auto w-50">
+                <div>
                   <Input
                     value={amountEntries[index].amount.toString()}
                     name="amount"
+                    className="w-full"
                     onChange={(e) =>
                       handleInputChange(index, "amount", +e.target.value)
                     }

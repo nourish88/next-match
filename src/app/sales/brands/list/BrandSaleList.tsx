@@ -21,8 +21,12 @@ type Props = {
   customers: Customer[];
 };
 export default function BrandSaleList({ brands, customers }: Props) {
-  const [date, setDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
+  const [date, setDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
   const [selectedCustomer, setSelectedCustomer] = useState<number | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,16 +59,17 @@ export default function BrandSaleList({ brands, customers }: Props) {
   return (
     <>
       <Card className="w-4/5 mx-auto mt-8">
-        <CardTitle header="Marka Satış Sorgulama  Formu"></CardTitle>
+        <CardTitle header="Marka Satış Sorgulama Formu"></CardTitle>
         <CardBody>
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-2">
-              <div className="flex-auto w-50">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
                 <Select
                   name="customerId"
                   onChange={(e) => setSelectedCustomer(+e.target.value)}
                   value={selectedCustomer!}
                   placeholder="Müşteri seçiniz"
+                  className="w-full"
                 >
                   {customers.map((customer) => {
                     // Define fullName by combining customer.name and customer.surName
@@ -81,12 +86,13 @@ export default function BrandSaleList({ brands, customers }: Props) {
                   })}
                 </Select>
               </div>
-              <div className="flex-auto w-50">
+              <div>
                 <Select
                   name="brandId"
                   value={selectedBrand!}
                   placeholder="Marka seçiniz"
                   onChange={(e) => setSelectedBrand(+e.target.value)}
+                  className="w-full"
                 >
                   {brands.map((brand) => (
                     <SelectItem value={brand.id.toString()} key={brand.id}>
@@ -97,26 +103,30 @@ export default function BrandSaleList({ brands, customers }: Props) {
               </div>
             </div>
 
-            <div className="flex gap-2 mt-4">
-              <div className="flex-auto w-50">
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block mb-2">Başlangıç Tarihi</label>
                 <Input
-                  value={date || undefined}
+                  value={date}
                   onChange={(e) => setDate(e.target.value)}
                   type="date"
+                  className="w-full"
                 />
               </div>
-              <div className="flex-auto w-50">
+              <div>
+                <label className="block mb-2">Bitiş Tarihi</label>
                 <Input
-                  value={endDate || undefined}
+                  value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   type="date"
+                  className="w-full"
                 />
               </div>
             </div>
 
             <div className="flex justify-end mt-4">
               <Button
-                className="flex "
+                className="flex"
                 type="submit"
                 color="primary"
                 isDisabled={isLoading}

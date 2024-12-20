@@ -129,10 +129,11 @@ function ProductSaleForm({ customers, medicines }: Props) {
         <CardTitle header="Ürün Satış Formu"></CardTitle>
         <CardBody>
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-2">
-              <div className="flex-auto w-50">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
                 <Autocomplete
                   name="customerId"
+                  className="w-full"
                   value={selectedCustomer || ""}
                   placeholder="Müşteri seçiniz"
                   onSelectionChange={(key) =>
@@ -145,6 +146,7 @@ function ProductSaleForm({ customers, medicines }: Props) {
 
                     return (
                       <AutocompleteItem
+                        className="w-full"
                         key={customer.id}
                         value={customer.id.toString()}
                       >
@@ -154,9 +156,10 @@ function ProductSaleForm({ customers, medicines }: Props) {
                   })}
                 </Autocomplete>
               </div>
-              <div className="flex-auto w-50">
+              <div>
                 <Input
                   value={date}
+                  className="w-full"
                   onChange={(e) => setDate(e.target.value)}
                   type="date"
                 />
@@ -164,8 +167,8 @@ function ProductSaleForm({ customers, medicines }: Props) {
             </div>
 
             {productEntries.map((entry, index) => (
-              <div key={index} className="flex gap-2 mt-4">
-                <div className="flex-auto w-50">
+              <div key={index} className="grid grid-cols-2 gap-4 mt-4">
+                <div>
                   <Autocomplete
                     name="medicineId"
                     value={entry.id || ""}
@@ -188,7 +191,7 @@ function ProductSaleForm({ customers, medicines }: Props) {
                     })}
                   </Autocomplete>
                 </div>
-                <div className="flex-auto w-50">
+                <div>
                   <Input
                     value={amountEntries[index].amount.toString()}
                     name="amount"

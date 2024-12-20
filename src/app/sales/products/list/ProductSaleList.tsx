@@ -20,8 +20,12 @@ type Props = {
   customers: Customer[];
 };
 function ProductSaleList({ medicines, customers }: Props) {
-  const [date, setDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
+  const [date, setDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
   const [selectedCustomer, setSelectedCustomer] = useState<number | null>(null);
   const [selectedMedicine, setSelectedMedicine] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,8 +61,8 @@ function ProductSaleList({ medicines, customers }: Props) {
         <CardTitle header="Marka Satış Sorgulama  Formu"></CardTitle>
         <CardBody>
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-2">
-              <div className="flex-auto w-50">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
                 <Select
                   name="customerId"
                   onChange={(e) => setSelectedCustomer(+e.target.value)}
@@ -80,7 +84,7 @@ function ProductSaleList({ medicines, customers }: Props) {
                   })}
                 </Select>
               </div>
-              <div className="flex-auto w-50">
+              <div>
                 <Select
                   name="medicineId"
                   value={selectedMedicine!}
@@ -99,15 +103,17 @@ function ProductSaleList({ medicines, customers }: Props) {
               </div>
             </div>
 
-            <div className="flex gap-2 mt-4">
-              <div className="flex-auto w-50">
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block mb-2">Başlangıç Tarihi</label>
                 <Input
                   value={date || undefined}
                   onChange={(e) => setDate(e.target.value)}
                   type="date"
                 />
               </div>
-              <div className="flex-auto w-50">
+              <div>
+                <label className="block mb-2">Bitiş Tarihi</label>
                 <Input
                   value={endDate || undefined}
                   onChange={(e) => setEndDate(e.target.value)}
