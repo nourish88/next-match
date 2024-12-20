@@ -6,6 +6,8 @@ import {
 } from "@/app/actions/saleActions";
 import CardTitle from "@/components/General/CardHeader";
 import {
+  Autocomplete,
+  AutocompleteItem,
   Button,
   Card,
   CardBody,
@@ -14,7 +16,7 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 import { Customer, Medicine } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { HiOutlineSave } from "react-icons/hi";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
@@ -35,7 +37,7 @@ function ProductSaleForm({ customers, medicines }: Props) {
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
 
   // Validate the form dynamically
-  const isFormValid = (): boolean => {
+  const isFormValid = useCallback((): boolean => {
     if (!date || !selectedCustomer) return false;
     for (let i = 0; i < productEntries.length; i++) {
       if (!productEntries[i].id || !amountEntries[i].amount) {
@@ -43,7 +45,7 @@ function ProductSaleForm({ customers, medicines }: Props) {
       }
     }
     return true;
-  };
+  }, [date, selectedCustomer, productEntries, amountEntries]);
 
   // Recalculate button disable state whenever a form field changes
   const handleInputChange = (
@@ -114,7 +116,7 @@ function ProductSaleForm({ customers, medicines }: Props) {
   // Recalculate button disable state whenever a form field changes
   useEffect(() => {
     setIsSaveDisabled(!isFormValid());
-  }, [date, selectedCustomer, productEntries, amountEntries]);
+  }, [date, selectedCustomer, productEntries, amountEntries, isFormValid]);
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -129,26 +131,26 @@ function ProductSaleForm({ customers, medicines }: Props) {
           <form onSubmit={handleSubmit}>
             <div className="flex gap-2">
               <div className="flex-auto w-50">
-                <Select
+                <Autocomplete
                   name="customerId"
-                  onChange={(e) => setSelectedCustomer(e.target.value)}
-                  value={selectedCustomer!}
+                  value={selectedCustomer || ""}
                   placeholder="Müşteri seçiniz"
+                  onSelectionChange={(key) => setSelectedCustomer(key)}
                 >
                   {customers.map((customer) => {
                     // Define fullName by combining customer.name and customer.surName
                     const fullName = `${customer.name} ${customer.surName}`;
 
                     return (
-                      <SelectItem
-                        value={customer.id.toString()}
+                      <AutocompleteItem
                         key={customer.id}
+                        value={customer.id.toString()}
                       >
                         {fullName}
-                      </SelectItem>
+                      </AutocompleteItem>
                     );
                   })}
-                </Select>
+                </Autocomplete>
               </div>
               <div className="flex-auto w-50">
                 <Input
@@ -162,23 +164,27 @@ function ProductSaleForm({ customers, medicines }: Props) {
             {productEntries.map((entry, index) => (
               <div key={index} className="flex gap-2 mt-4">
                 <div className="flex-auto w-50">
-                  <Select
+                  <Autocomplete
                     name="medicineId"
                     value={entry.id || ""}
                     placeholder="Ürün seçiniz"
-                    onChange={(e) =>
-                      handleInputChange(index, "id", e.target.value)
+                    onSelectionChange={(key) =>
+                      handleInputChange(index, "id", key)
                     }
                   >
-                    {medicines.map((medicines) => (
-                      <SelectItem
-                        value={medicines.id.toString()}
-                        key={medicines.id}
-                      >
-                        {medicines.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    {medicines.map((medicine) => {
+                      const productName = `${medicine.name} (${medicine.barcode})`;
+
+                      return (
+                        <AutocompleteItem
+                          key={medicine.id}
+                          value={medicine.id.toString()}
+                        >
+                          {productName}
+                        </AutocompleteItem>
+                      );
+                    })}
+                  </Autocomplete>
                 </div>
                 <div className="flex-auto w-50">
                   <Input
