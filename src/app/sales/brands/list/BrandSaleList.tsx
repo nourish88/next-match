@@ -24,9 +24,11 @@ export default function BrandSaleList({ brands, customers }: Props) {
   const [date, setDate] = useState<string>(
     new Date().toISOString().split("T")[0]
   );
-  const [endDate, setEndDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [endDate, setEndDate] = useState<string>(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split("T")[0];
+  });
   const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
